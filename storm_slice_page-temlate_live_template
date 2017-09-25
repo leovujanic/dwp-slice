@@ -1,0 +1,20 @@
+<?php
+/**
+ * Template Name: ${TEMPLATE_NAME}
+ *
+ * User: ${USER}
+ * Date: ${DATE}
+ * Time: ${TIME}
+ * @source DWP slice
+ */
+
+require_once __DIR__ . '/../core/ini.php';
+
+get_header();
+
+
+
+
+
+
+get_footer();
