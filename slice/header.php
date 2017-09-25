@@ -14,6 +14,7 @@
     <title>Slice template</title>
     <link rel="stylesheet" href="<?= bu('css/test-style.css') ?>">
     <script src="<?= bu('js/test.js') ?>"></script>
+    <?php wp_head(); ?>
 </head>
 <body>
 <header>

@@ -83,6 +83,52 @@ function get_footer($name = null)
     echo renderRootFile($fileName);
 }
 
+/**
+ *
+ */
+function wp_head()
+{
+    // nothing for now;
+}
+
+/**
+ * @throws Exception
+ */
+function wp_footer()
+{
+    _defineInternalStaticPath();
+    
+    $homeUrl = get_home_url();
+    $js = <<<JS
+    
+    var dwpSliceThemeHome = '$homeUrl';
+
+function goHome(blank) {
+    var isBlank = blank || false;
+    
+    if(isBlank === true) {
+        window.open(dwpSliceThemeHome);
+    } else {
+        window.location = dwpSliceThemeHome;
+    }
+}
+
+JS;
+    echo '<script>' . $js . '</script>';
+}
+
+/**
+ * @return mixed
+ * @throws Exception
+ */
+function get_home_url()
+{
+    _defineInternalStaticPath();
+    
+    $chunks = explode('wp-content', INTERNAL_STATIC_PATH);
+    
+    return $chunks[0];
+}
 
 # endregion
 
@@ -96,8 +142,18 @@ function get_footer($name = null)
  */
 function bu($url = '')
 {
+    _defineInternalStaticPath();
+    
+    return INTERNAL_STATIC_PATH . _sanitizeFileName($url);
+}
+
+/**
+ * @throws Exception
+ */
+function _defineInternalStaticPath()
+{
     if (defined('INTERNAL_STATIC_PATH')) {
-        return INTERNAL_STATIC_PATH . _sanitizeFileName($url);
+        return;
     }
     
     $uriChunks = explode('slice', $_SERVER['REQUEST_URI']);
@@ -109,9 +165,8 @@ function bu($url = '')
     $internalStaticPath = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . $uriChunks[0] . STATIC_DIR . '/';
     
     define('INTERNAL_STATIC_PATH', $internalStaticPath);
-    
-    return INTERNAL_STATIC_PATH . _sanitizeFileName($url);
 }
+
 
 /**
  * @param      $partial
